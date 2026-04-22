@@ -1,0 +1,73 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "coal4bar"
+version = "0.1.0"
+description = "Four-Bar Hydraulic Support Simulation and Analysis Tool for Coal Mining"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "coal4bar development team", email = "info@coal4bar.dev"}
+]
+
+keywords = ["coal-mining", "hydraulic-support", "four-bar-linkage", "simulation", "kinematic-analysis"]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Manufacturing",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Engineering",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+    "numpy>=1.21.0",
+    "scipy>=1.7.0",
+    "matplotlib>=3.4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.12.0",
+    "black>=21.0",
+    "flake8>=3.9.0",
+    "mypy>=0.910",
+]
+
+docs = [
+    "sphinx>=4.0",
+    "sphinx-rtd-theme>=1.0",
+    "sphinx-autodoc-typehints>=1.12",
+]
+
+[project.urls]
+Homepage = "https://github.com/abelli5/coal4bar"
+Documentation = "https://coal4bar.readthedocs.io"
+Repository = "https://github.com/abelli5/coal4bar.git"
+"Bug Tracker" = "https://github.com/abelli5/coal4bar/issues"
+
+[tool.setuptools]
+packages = ["coal4bar"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]
