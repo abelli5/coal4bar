@@ -13,6 +13,27 @@ from typing import Dict, Optional
 import math
 
 
+def configure_fonts():
+    """
+    Configure matplotlib to use Chinese fonts if available.
+    """
+    try:
+        import matplotlib.pyplot as plt
+        import matplotlib.font_manager as fm
+        
+        # Common Chinese fonts for Windows and Linux
+        chinese_fonts = ['SimHei', 'Microsoft YaHei', 'Noto Sans SC', 'STHeiti', 'DejaVu Sans']
+        
+        available_fonts = [f.name for f in fm.fontManager.ttflist]
+        font_to_use = [f for f in chinese_fonts if f in available_fonts]
+        
+        if font_to_use:
+            plt.rcParams['font.sans-serif'] = font_to_use
+            plt.rcParams['axes.unicode_minus'] = False
+    except ImportError:
+        pass
+
+
 class Visualizer:
     """
     Visualization tools for four-bar linkage analysis.
@@ -28,6 +49,7 @@ class Visualizer:
         self.linkage = linkage
         self.figure = None
         self.axes = None
+        configure_fonts()
     
     def plot_linkage_configuration(self, show_forces: bool = False, 
                                    force_dict: Dict = None):
