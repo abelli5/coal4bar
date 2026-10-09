@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tri Dao 研究方向全景报告</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --surface-hover: #21262d;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #bc8cff;
+            --accent-orange: #f0883e;
+            --accent-red: #f85149;
+            --accent-cyan: #39d0d8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+        
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 60px 24px 48px;
+            background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1a1f2e 100%);
+            border-radius: 16px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(88,166,255,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 60%, rgba(188,140,255,0.08) 0%, transparent 50%);
+            animation: float 8s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-20px, 20px); }
+        }
+        .hero h1 {
+            font-size: 2.4em;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+        .hero .subtitle {
+            font-size: 1.15em;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 24px;
+            position: relative;
+        }
+        .hero .badges {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            background: var(--surface);
+        }
+        .badge.blue { color: var(--accent-blue); border-color: rgba(88,166,255,0.3); }
+        .badge.green { color: var(--accent-green); border-color: rgba(63,185,80,0.3); }
+        .badge.purple { color: var(--accent-purple); border-color: rgba(188,140,255,0.3); }
+        .badge.orange { color: var(--accent-orange); border-color: rgba(240,136,62,0.3); }
+
+        /* Section */
+        .section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .section-icon {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; font-weight: 700;
+            flex-shrink: 0;
+        }
+        .section-header h2 {
+            font-size: 1.4em;
+            font-weight: 700;
+        }
+        
+        /* Info grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .info-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px;
+        }
+        .info-card .label {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        .info-card .value {
+            font-size: 1.05em;
+            font-weight: 600;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px; top: 8px; bottom: 8px;
+            width: 2px;
+            background: var(--border);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding-bottom: 4px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -28px; top: 6px;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-blue);
+            background: var(--bg);
+        }
+        .timeline-year {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            font-weight: 700;
+            background: rgba(88,166,255,0.15);
+            color: var(--accent-blue);
+            margin-bottom: 6px;
+        }
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .timeline-desc {
+            font-size: 0.92em;
+            color: var(--text-secondary);
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+        th {
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 2px solid var(--border);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        tr:hover { background: var(--surface-hover); }
+        td.paper-title { font-weight: 600; color: var(--text); }
+        td.venue { color: var(--accent-green); font-weight: 500; }
+        td.citations { color: var(--accent-orange); font-weight: 600; text-align: center; }
+
+        /* Direction cards */
+        .direction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        .direction-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            transition: border-color 0.2s;
+        }
+        .direction-card:hover { border-color: var(--accent-blue); }
+        .direction-card .dir-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .direction-card .dir-title {
+            font-weight: 700;
+            font-size: 1.05em;
+        }
+        .stars { font-size: 0.85em; color: var(--accent-orange); }
+        .direction-card .dir-desc {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+        .direction-card .dir-topics {
+            list-style: none;
+            padding: 0;
+        }
+        .direction-card .dir-topics li {
+            font-size: 0.88em;
+            padding: 4px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+        .direction-card .dir-topics li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-blue);
+        }
+
+        /* Architecture diagram */
+        .arch-diagram {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 24px;
+            margin: 16px 0;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            font-size: 0.85em;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre;
+        }
+        .arch-diagram .highlight { color: var(--accent-blue); }
+        .arch-diagram .highlight2 { color: var(--accent-green); }
+        .arch-diagram .highlight3 { color: var(--accent-purple); }
+        .arch-diagram .highlight4 { color: var(--accent-orange); }
+
+        /* Stats bar */
+        .stats-bar {
+            display: flex;
+            gap: 24px;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 24px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-label {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        /* Citation chart */
+        .chart-container {
+            margin: 20px 0;
+        }
+        .chart-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .chart-label {
+            width: 180px;
+            font-size: 0.88em;
+            font-weight: 500;
+            flex-shrink: 0;
+            text-align: right;
+        }
+        .chart-bar-bg {
+            flex: 1;
+            height: 28px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+        .chart-bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            font-size: 0.82em;
+            font-weight: 700;
+            color: white;
+            transition: width 0.8s ease;
+        }
+        .bar-blue { background: linear-gradient(90deg, #1f6feb, #58a6ff); }
+        .bar-green { background: linear-gradient(90deg, #238636, #3fb950); }
+        .bar-purple { background: linear-gradient(90deg, #8957e5, #bc8cff); }
+        .bar-orange { background: linear-gradient(90deg, #db6d28, #f0883e); }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 32px 0;
+            color: var(--text-secondary);
+            font-size: 0.85em;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+        .footer a { color: var(--accent-blue); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+
+        /* TOC */
+        .toc {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 32px;
+        }
+        .toc a {
+            padding: 6px 14px;
+            border-radius: 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.88em;
+            transition: all 0.2s;
+        }
+        .toc a:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.6em; }
+            .section { padding: 20px; }
+            .chart-label { width: 120px; font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Hero -->
+    <div class="hero">
+        <h1>Tri Dao 研究方向全景报告</h1>
+        <p class="subtitle">系统梳理 Tri Dao 的核心论文、研究脉络与生态影响，为进一步研究方向选择提供参考</p>
+        <div class="badges">
+            <span class="badge blue">FlashAttention 1-4</span>
+            <span class="badge purple">Mamba 1-3 / SSM</span>
+            <span class="badge green">Princeton + Together AI</span>
+            <span class="badge orange">2017-2026</span>
+        </div>
+    </div>
+
+    <!-- TOC -->
+    <div class="toc">
+        <a href="#profile">研究者背景</a>
+        <a href="#stats">核心数据</a>
+        <a href="#timeline">研究时间线</a>
+        <a href="#flashattention">FlashAttention 系</a>
+        <a href="#mamba">Mamba/SSM 系</a>
+        <a href="#citations">引用影响</a>
+        <a href="#directions">五大研究方向</a>
+        <a href="#recommendations">方向选择建议</a>
+    </div>
+
+    <!-- 研究者背景 -->
+    <div class="section" id="profile">
+        <div class="section-header">
+            <div class="section-icon" style="background:rgba(88,166,255,0.15);color:var(--accent-blue)">1</div>
+            <h2>研究者背景</h2>
+        </div>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="label">当前职位</div>
+                <div class="value">普林斯顿大学 CS 助理教授</div>
+            </div>
+            <div class="info-card">
+                <div class="label">兼职</div>
+                <div class="value">Together AI 联合创始人 & CSO</div>
+            </div>
+            <div class="info-card">
+                <div class="label">教育</div>
+                <div class="value">斯坦福大学 CS 博士</div>
+            </div>
+            <div class="info-card">
+                <div class="label">导师</div>
+                <div class="value">Christopher Ré & Stefano Ermon</div>
+            </div>
+            <div class="info-card">
+                <div class="label">个人主页</div>
+                <div class="value"><a href="https://tridao.me/" style="color:var(--accent-blue)">tridao.me</a></div>
+            </div>
+            <div class="info-card">
+                <div class="label">Google Scholar</div>
+                <div class="value"><a href="https://scholar.google.com/citations?user=NQRw0bQAAAAJ" style="color:var(--accent-blue)">NQRw0bQAAAAJ</a></div>
+            </div>
+        </div>
+        <p style="color:var(--text-secondary);font-size:0.92em;margin-top:16px">
+            Tri Dao 的研究聚焦于<b style="color:var(--text)">机器学习与系统的交叉领域</b>，核心关注高效训练与推理。两大代表性成果——FlashAttention 系列（硬件感知高效注意力）和 Mamba 系列（选择性状态空间模型）——深刻影响了大规模语言模型的训练和推理范式。2024-2026 年间，研究重点向更复杂的序列建模、推理系统优化和混合架构方向扩展。
+        </p>
+    </div>
+
+    <!-- 核心数据 -->
+    <div class="section" id="stats">
+        <div class="section-header">
+            <div class="section-icon" style="background:rgba(63,185,80,0.15);color:var(--accent-green)">2</div>
+            <h2>核心数据</h2>
+        </div>
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value">30+</div>
+                <div class="stat-label">主要论文</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">25K+</div>
+                <div class="stat-label">总引用量</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">6</div>
+                <div class="stat-label">重要奖项</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">5</div>
+                <div class="stat-label">研究方向</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 研究时间线 -->
+    <div class="section" id="timeline">
+        <div class="section-header">
+            <div class="section-icon" style="background:rgba(188,140,255,0.15);color:var(--accent-purple)">3</div>
+            <h2>研究时间线与核心里程碑</h2>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <span class="timeline-year">2017-2019</span>
+                <div class="timeline-title">核方法与数据增强</div>
+                <div class="timeline-desc">Gaussian Quadrature for Kernel Features (NeurIPS 2017), Kernel Theory of Data Augmentation (ICML 2019) — 早期关注高效核方法</div>
+            </div>
+            <div class="timeline-item">
+                <span class="timeline-year">2020</span>
+                <div class="timeline-title">HiPPO: 多项式投影记忆</div>
+                <div class="timeline-desc">NeurIPS 2020 — 提出最优多项式投影记忆框架，为后续 S4/Mamba 奠定理论基础</div>
+            </div>
+            <div class="timeline-item">
+                <span class="timeline-year">2022</span>
+                <div class="timeline-title">S4 + FlashAttention 双线启动</div>
+                <div class="timeline-desc">S4 (ICLR 2022): 结构化状态空间模型; FlashAttention (NeurIPS 2022): IO-aware 精确注意力, A100 上 2-4x 加速</div>
+            </div>
+            <div class="timeline-item">
+                <span class="timeline-year">2023</span>
+                <div class="timeline-title">FlashAttention-2</div>
+                <div class="timeline-desc">ICLR 2023 — 改进并行和工作划分, A100 上达理论 50-73%</div>
+            </div>
+            <div class="timeline-item">
+                <span class="timeline-year">2024</span>
+                <div class="timeline-title">Mamba + Mamba-2 + FlashAttention-3</div>
+                <div class="timeline-desc">Mamba (COLM 2024 Outstanding Paper): 选择性 SSM; Mamba-2/SSD (ICML 2024): SSM-Attention 对偶; FA3 (NeurIPS 2024): Hopper 架构, H100 上 740 TFLOPs/s</div>
+            </div>
+            <div class="timeline-item">
+                <span class="timeline-year">2025</span>
+                <div class="timeline-title">系统优化深化</div>
+                <div class="timeline-desc">Marconi (MLSys 2025): Prefix Caching; Hardware-Efficient Attention — 均获 Outstanding Paper Honorable Mention</div>
+            </div>
+            <div class="timeline-item">
+                <span class="timeline-year">2026</span>
+                <div class="timeline-title">FlashAttention-4 + Mamba-3 + 多方向扩展</div>
+                <div class="timeline-desc">FA4 (MLSys 2026 Best Paper HM): Blackwell 架构; Mamba-3 (ICLR 2026): 复数状态转移; SonicMoE: MoE 加速; Log-Linear Attention</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FlashAttention 系 -->
+    <div class="section" id="flashattention">
+        <div class="section-header">
+            <div class="section-icon" style="background:rgba(88,166,255,0.15);color:var(--accent-blue)">4</div>
+            <h2>FlashAttention 系列 — 硬件感知高效注意力</h2>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>版本</th>
+                    <th>论文</th>
+                    <th>会议/年份</th>
+                    <th>目标硬件</th>
+                    <th>理论效率</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>FA1</td>
+                    <td class="paper-title">FlashAttention: IO-Awareness</td>
+                    <td class="venue">NeurIPS 2022</td>
+                    <td>A100 (Ampere)</td>
+                    <td>25-40%</td>
+                </tr>
+                <tr>
+                    <td>FA2</td>
+                    <td class="paper-title">FlashAttention-2: Better Parallelism</td>
+                    <td class="venue">ICLR 2023</td>
+                    <td>A100 (Ampere)</td>
+                    <td>50-73%</td>
+                </tr>
+                <tr>
+                    <td>FA3</td>
+                    <td class="paper-title">FlashAttention-3: Asynchrony + FP8</td>
+                    <td class="venue">NeurIPS 2024</td>
+                    <td>H100 (Hopper)</td>
+                    <td>75% (740 TFLOPs/s)</td>
+                </tr>
+                <tr>
+                    <td>FA4</td>
+                    <td class="paper-title">FlashAttention-4: Algorithm-Kernel Co-design</td>
+                    <td class="venue">MLSys 2026</td>
+                    <td>Blackwell</td>
+                    <td>Best Paper HM</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 style="margin-top:24px;margin-bottom:12px;color:var(--text)">FlashAttention 生态影响</h3>
+        <div class="arch-diagram"><span class="highlight">FlashAttention 核心思想</span> (IO-aware, 分块计算, 硬件感知)
+  ├── <span class="highlight2">扩展</span>: FlashMask (复杂掩码), FlexAttention (编程模型)
+  ├── <span class="highlight3">线性注意力</span>: FlashLinearAttention, FLA, Lightning Attention-2
+  ├── <span class="highlight4">稀疏注意力</span>: Native Sparse Attention (ACL 2025 Best Paper), FlashSFA
+  ├── <span class="highlight2">MLA 解码</span>: FlashMLA (DeepSeek)
+  └── <span class="highlight3">SSM 交叉</span>: Mamba-2/SSD, Gated Delta Networks</div>
+    </div>
+
+    <!-- Mamba/SSM 系 -->
+    <div class="section" id="mamba">
+        <div class="section-header">
+            <div class="section-icon" style="background:rgba(188,140,255,0.15);color:var(--accent-purple)">5</div>
+            <h2>Mamba / SSM 系列 — 状态空间模型</h2>
+        </div>
+
+        <div class="arch-diagram"><span class="highlight3">HiPPO</span> (2020) <span class="highlight">→</span> 多项式投影记忆框架
+    │
+<span class="highlight3">S4</span> (2022) <span class="highlight">→</span> 结构化状态空间, DPLR 参数化, 长序列 SOTA
+    │
+<span class="highlight3">Mamba / S6</span> (2023) <span class="highlight">→</span> <span class="highlight4">选择性 SSM</span> (input-dependent B, C, Δ)
+    ├── 线性时间 O(N) 复杂度
+    ├── 全局卷积 (训练时并行)
+    └── 去除 attention/MLP 的端到端 SSM
+         │
+<span class="highlight3">Mamba-2 / SSD</span> (2024) <span class="highlight">→</span> 状态空间对偶理论
+    ├── SSM ↔ Attention 形式化对偶
+    ├── 更大状态维度 (N=64→256+)
+    └── 训练速度 2-8x 加速
+         │
+<span class="highlight3">Mamba-3</span> (2026) <span class="highlight">→</span> 复数状态转移, 改进离散化</div>
+
+        <h3 style="margin-top:24px;margin-bottom:12px;color:var(--text)">SSM 生态扩展全景</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>领域</th>
+                    <th>代表性论文</th>
+                    <th>会议</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>视觉 (ViT)</td><td class="paper-title">Vim, VMamba, QuadMamba, LocalMamba</td><td class="venue">ICML/NeurIPS/ECCV 2024</td></tr>
+                <tr><td>语言模型</td><td class="paper-title">Jamba (混合+MoE), ReMamba</td><td class="venue">arXiv/EMNLP 2024-2025</td></tr>
+                <tr><td>生物序列</td><td class="paper-title">Caduceus (DNA)</td><td class="venue">ICML 2024</td></tr>
+                <tr><td>跨模态</td><td class="paper-title">MambaVL, HydraMamba (点云)</td><td class="venue">arXiv/ACM MM 2024-2025</td></tr>
+                <tr><td>理论分析</td><td class="paper-title">Input Selectivity, Limitations in COPY/CoT</td><td class="venue">ICML/EMNLP 2025</td></tr>
+                <tr><td>可解释性</td><td class="paper-title">Activation Subspace Bottlenecks</td><td class="venue">OpenReview 2025</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 引用影响 -->
+    <div class="section" id="citations">
+        <div class="section-header">
+            <div class="section-icon" style="background:rgba(240,136,62,0.15);color:var(--accent-orange)">6</div>
+            <h2>核心论文引用影响</h2>
+        </div>
+        <div class="chart-container">
+            <div class="chart-row">
+                <div class="chart-label">Mamba (2023/24)</div>
+                <div class="chart-bar-bg"><div class="chart-bar-fill bar-purple" style="width:100%">~13,500</div></div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-label">FlashAttention (2022)</div>
+                <div class="chart-bar-bg"><div class="chart-bar-fill bar-blue" style="width:44%">~6,000</div></div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-label">FA-2 (2023)</div>
+                <div class="chart-bar-bg"><div class="chart-bar-fill bar-blue" style="width:26%">~3,500</div></div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-label">Mamba-2/SSD (2024)</div>
+                <div class="chart-bar-bg"><div class="chart-bar-fill bar-purple" style="width:17%">~2,300</div></div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-label">LSSL (2021)</div>
+                <div class="chart-bar-bg"><div class="chart-bar-fill bar-green" style="width:11%">~1,500</div></div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-label">HiPPO (2020)</div>
+                <div class="chart-bar-bg"><div class="chart-bar-fill bar-green" style="width:10%">~1,400</div></div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-label">ScatterBrain (2021)</div>
+                <div class="chart-bar-bg"><div class="chart-bar-fill bar-orange" style="width:2%">~200</div></div>
+            </div>
+        </div>
+        <p style="color:var(--text-secondary);font-size:0.88em;margin-top:12px">数据来源: Google Scholar，近似值，截至 2026 年中</p>
+    </div>
+
+    <!-- 五大研究方向 -->
+    <div class="section" id="directions">
+        <div class="section-header">
+            <div class="section-icon" style="background:rgba(57,208,216,0.15);color:var(--accent-cyan)">7</div>
+            <h2>五大可探索研究方向</h2>
+        </div>
+        <div class="direction-grid">
+            <div class="direction-card">
+                <div class="dir-header">
+                    <span class="dir-title">A. SSM 理论深化</span>
+                    <span class="stars">★★★★☆</span>
+                </div>
+                <div class="dir-desc">复数状态空间、SSM scaling law、选择性机制泛化</div>
+                <ul class="dir-topics">
+                    <li>Mamba-3 复数 SSM 深化</li>
+                    <li>SSM 缩放规律研究</li>
+                    <li>多头/层级选择性</li>
+                    <li>SSM-RNN-CNN-Attention 统一</li>
+                </ul>
+            </div>
+            <div class="direction-card">
+                <div class="dir-header">
+                    <span class="dir-title">B. 视觉 SSM 扩展</span>
+                    <span class="stars">★★★★★</span>
+                </div>
+                <div class="dir-desc">视频 SSM、多模态融合、3D SSM、医学影像</div>
+                <ul class="dir-topics">
+                    <li>视频时序选择性扫描</li>
+                    <li>视觉-语言 SSM 融合</li>
+                    <li>3D 点云/NeRF SSM</li>
+                    <li>病理切片大图建模</li>
+                    <li>边缘设备轻量 SSM</li>
+                </ul>
+            </div>
+            <div class="direction-card">
+                <div class="dir-header">
+                    <span class="dir-title">C. 混合架构</span>
+                    <span class="stars">★★★★★</span>
+                </div>
+                <div class="dir-desc">SSM+Transformer 最优混合策略、自适应路由</div>
+                <ul class="dir-topics">
+                    <li>自适应 SSM/Attention 选择</li>
+                    <li>混合架构 scaling law</li>
+                    <li>任务感知混合配置</li>
+                    <li>SSD 统一层设计</li>
+                    <li>长上下文混合优化</li>
+                </ul>
+            </div>
+            <div class="direction-card">
+                <div class="dir-header">
+                    <span class="dir-title">D. 高效注意力新范式</span>
+                    <span class="stars">★★★☆☆</span>
+                </div>
+                <div class="dir-desc">Log-Linear Attention、动态稀疏、超低精度</div>
+                <ul class="dir-topics">
+                    <li>对数线性注意力深化</li>
+                    <li>动态稀疏注意力</li>
+                    <li>FP4 超低精度注意力</li>
+                    <li>非 GPU 架构适配</li>
+                    <li>Attention-SSM 统一内核</li>
+                </ul>
+            </div>
+            <div class="direction-card">
+                <div class="dir-header">
+                    <span class="dir-title">E. SSM 可解释性</span>
+                    <span class="stars">★★★☆☆</span>
+                </div>
+                <div class="dir-desc">SSM 机制理解、失败模式分析、表达能力边界</div>
+                <ul class="dir-topics">
+                    <li>选择性门控机制解析</li>
+                    <li>COPY/ICL/CoT 局限根因</li>
+                    <li>SSM 表达能力理论</li>
+                    <li>SSM vs Transformer 对比</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 方向选择建议 -->
+    <div class="section" id="recommendations">
+        <div class="section-header">
+            <div class="section-icon" style="background:rgba(240,136,62,0.15);color:var(--accent-orange)">8</div>
+            <h2>方向选择建议</h2>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>目标</th>
+                    <th>推荐方向</th>
+                    <th>理由</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>快速发论文</td>
+                    <td class="paper-title">B (视觉 SSM) / C (混合架构)</td>
+                    <td>应用空间大，实验验证周期短，有明确基线</td>
+                </tr>
+                <tr>
+                    <td>深入理论</td>
+                    <td class="paper-title">A (SSM 理论) / E (可解释性)</td>
+                    <td>SSM 理论快速发展，高引用理论贡献空间大</td>
+                </tr>
+                <tr>
+                    <td>工业界价值</td>
+                    <td class="paper-title">C (混合架构) / D (高效注意力)</td>
+                    <td>所有大模型公司关注，直接关系训练/推理成本</td>
+                </tr>
+                <tr>
+                    <td>跨学科应用</td>
+                    <td class="paper-title">B 中的医学影像/遥感子方向</td>
+                    <td>大尺寸图像天然适配长序列建模，跨学科合作多</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 style="margin-top:24px;margin-bottom:12px;color:var(--text)">推荐阅读顺序</h3>
+        <div class="arch-diagram"><span class="highlight">1.</span> HiPPO (NeurIPS 2020) — SSM 起源
+<span class="highlight">2.</span> S4 (ICLR 2022) — 结构化状态空间
+<span class="highlight">3.</span> FlashAttention (NeurIPS 2022) — 高效注意力
+<span class="highlight">4.</span> Mamba (COLM 2024) — 选择性 SSM
+<span class="highlight2">5.</span> Mamba-2/SSD (ICML 2024) — SSM-Attention 对偶
+<span class="highlight2">6.</span> 根据选定方向深入阅读对应论文</div>
+    </div>
+
+    <!-- 奖项 -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-icon" style="background:rgba(63,185,80,0.15);color:var(--accent-green)">★</div>
+            <h2>荣誉与奖项</h2>
+        </div>
+        <div class="info-grid">
+            <div class="info-card"><div class="label">2026</div><div class="value">MLSys Best Paper Honorable Mention (FA4)</div></div>
+            <div class="info-card"><div class="label">2025</div><div class="value">MLSys Outstanding Paper HM (Marconi)</div></div>
+            <div class="info-card"><div class="label">2025</div><div class="value">Google ML & Systems Junior Faculty Award</div></div>
+            <div class="info-card"><div class="label">2025</div><div class="value">Google Research Scholar</div></div>
+            <div class="info-card"><div class="label">2025</div><div class="value">Schmidt Sciences AI2050 Fellowship</div></div>
+            <div class="info-card"><div class="label">2024</div><div class="value">COLM Outstanding Paper (Mamba)</div></div>
+            <div class="info-card"><div class="label">2024</div><div class="value">Stanford Open Source Software Prize</div></div>
+            <div class="info-card"><div class="label">2022</div><div class="value">ICML Outstanding Paper runner-up (Monarch)</div></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>报告生成时间: 2026-09-15 | 数据来源: Tri Dao 个人主页、Google Scholar、arXiv、各会议官网</p>
+        <p style="margin-top:8px">配套文件: <a href="./papers/core_papers.md">核心论文清单</a> · <a href="./papers/flashattention_related.md">FA 相关论文</a> · <a href="./papers/mamba_ssm_related.md">Mamba/SSM 相关论文</a> · <a href="./research-directions/direction_analysis.md">方向分析</a> · <a href="./analysis/recommendations.md">选择建议</a></p>
+    </div>
+
+</div>
+</body>
+</html>

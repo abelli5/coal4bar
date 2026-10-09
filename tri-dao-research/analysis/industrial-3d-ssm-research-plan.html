@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工业 3D 模型方向 SSM 研究：文献综述与实验方案</title>
+<style>
+:root {
+  --bg: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card-2: #334155;
+  --text: #f1f5f9;
+  --text-dim: #94a3b8;
+  --text-accent: #a78bfa;
+  --border: #475569;
+  --blue: #3b82f6;
+  --blue-light: #93c5fd;
+  --green: #10b981;
+  --green-light: #6ee7b7;
+  --amber: #f59e0b;
+  --amber-light: #fcd34d;
+  --red: #ef4444;
+  --red-light: #fca5a5;
+  --purple: #8b5cf6;
+  --purple-light: #c4b5fd;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  padding: 0;
+}
+.container { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 60px 24px 48px;
+  background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+  border-bottom: 1px solid var(--border);
+  border-radius: 0 0 24px 24px;
+  margin-bottom: 48px;
+}
+.hero h1 {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #c4b5fd, #93c5fd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+}
+.hero .subtitle { color: var(--text-dim); font-size: 15px; }
+.hero .meta {
+  display: flex; justify-content: center; gap: 24px;
+  margin-top: 20px; font-size: 13px; color: var(--text-dim);
+}
+.hero .meta span { display: flex; align-items: center; gap: 6px; }
+.hero .meta .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--purple); }
+
+/* Section headings */
+h2 {
+  font-size: 22px; font-weight: 700; color: var(--text);
+  margin: 48px 0 20px; padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+h2 .num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--purple), var(--blue));
+  font-size: 14px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+h3 {
+  font-size: 17px; font-weight: 600; color: var(--blue-light);
+  margin: 32px 0 14px;
+}
+h4 {
+  font-size: 15px; font-weight: 600; color: var(--green-light);
+  margin: 24px 0 10px;
+}
+
+p { margin-bottom: 12px; color: #cbd5e1; font-size: 14.5px; }
+strong { color: var(--text); }
+em { color: var(--amber-light); font-style: normal; }
+
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 16px 0;
+}
+.card.gap-card {
+  border: 1px solid var(--amber);
+  background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(30,41,59,0.9));
+}
+.card.highlight {
+  border-left: 4px solid var(--purple);
+}
+.callout {
+  background: rgba(139,92,246,0.1);
+  border: 1px solid rgba(139,92,246,0.3);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+.callout .label {
+  font-size: 12px; font-weight: 700; color: var(--purple-light);
+  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;
+}
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13.5px; }
+th {
+  background: var(--bg-card-2); color: var(--text);
+  font-weight: 600; text-align: left; padding: 10px 12px;
+  border: 1px solid var(--border);
+}
+td {
+  padding: 8px 12px; border: 1px solid var(--border); color: #cbd5e1;
+  vertical-align: top;
+}
+tr:nth-child(even) td { background: rgba(30,41,59,0.5); }
+td .tag {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 11px; font-weight: 600;
+}
+.tag.green { background: rgba(16,185,129,0.15); color: var(--green-light); }
+.tag.blue { background: rgba(59,130,246,0.15); color: var(--blue-light); }
+.tag.red { background: rgba(239,68,68,0.15); color: var(--red-light); }
+.tag.amber { background: rgba(245,158,11,0.15); color: var(--amber-light); }
+.tag.purple { background: rgba(139,92,246,0.15); color: var(--purple-light); }
+
+/* Lists */
+ul, ol { margin: 8px 0 16px 20px; }
+li { margin-bottom: 6px; color: #cbd5e1; font-size: 14.5px; }
+ul li::marker { color: var(--purple-light); }
+
+/* Code-ish */
+.code-block {
+  background: #0c1322; border: 1px solid var(--border);
+  border-radius: 8px; padding: 16px 20px; margin: 12px 0;
+  font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px;
+  color: var(--green-light); overflow-x: auto; white-space: pre;
+}
+
+/* Phase boxes */
+.phase {
+  background: var(--bg-card); border-radius: 12px;
+  overflow: hidden; margin: 20px 0; border: 1px solid var(--border);
+}
+.phase-header {
+  padding: 14px 20px; font-weight: 700; font-size: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.phase-body { padding: 16px 24px; }
+.phase-1 .phase-header { background: linear-gradient(90deg, rgba(59,130,246,0.2), rgba(59,130,246,0.05)); border-bottom: 1px solid rgba(59,130,246,0.3); }
+.phase-2 .phase-header { background: linear-gradient(90deg, rgba(16,185,129,0.2), rgba(16,185,129,0.05)); border-bottom: 1px solid rgba(16,185,129,0.3); }
+.phase-3 .phase-header { background: linear-gradient(90deg, rgba(245,158,11,0.2), rgba(245,158,11,0.05)); border-bottom: 1px solid rgba(245,158,11,0.3); }
+.phase-4 .phase-header { background: linear-gradient(90deg, rgba(139,92,246,0.2), rgba(139,92,246,0.05)); border-bottom: 1px solid rgba(139,92,246,0.3); }
+.phase-icon {
+  width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: #fff; flex-shrink: 0;
+}
+.phase-1 .phase-icon { background: var(--blue); }
+.phase-2 .phase-icon { background: var(--green); }
+.phase-3 .phase-icon { background: var(--amber); }
+.phase-4 .phase-icon { background: var(--purple); }
+
+/* Timeline */
+.timeline {
+  position: relative; margin: 24px 0; padding-left: 28px;
+}
+.timeline::before {
+  content: ''; position: absolute; left: 8px; top: 0; bottom: 0;
+  width: 2px; background: var(--border);
+}
+.timeline-item { position: relative; margin-bottom: 20px; }
+.timeline-item::before {
+  content: ''; position: absolute; left: -24px; top: 4px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--purple); border: 2px solid var(--bg);
+}
+.timeline-item .time { font-size: 12px; color: var(--text-dim); font-weight: 600; }
+.timeline-item .content { font-size: 14px; color: #cbd5e1; margin-top: 4px; }
+
+/* Citation */
+.cite { color: var(--blue-light); font-size: 12px; text-decoration: none; }
+.cite:hover { text-decoration: underline; }
+
+/* Divider */
+.divider { height: 1px; background: var(--border); margin: 40px 0; border: none; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container { padding: 20px 12px 60px; }
+  table { font-size: 12px; }
+  td, th { padding: 6px 8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>工业 3D 模型方向 SSM 研究</h1>
+  <div class="subtitle">文献综述与实验方案 — B-Rep 拓扑序列化驱动的状态空间模型</div>
+  <div class="meta">
+    <span><span class="dot"></span> 方向 B · 视觉 SSM 扩展</span>
+    <span><span class="dot"></span> 2026-10</span>
+    <span><span class="dot"></span> 基于 Tri Dao 研究脉络</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ============================================================ -->
+<!-- PART I: LITERATURE REVIEW -->
+<!-- ============================================================ -->
+
+<h2><span class="num">I</span> 文献综述</h2>
+
+<p>本综述覆盖三个交叉领域的最新进展：<strong>3D SSM（状态空间模型）</strong>、<strong>B-Rep 深度学习</strong>、<strong>FEA 仿真与深度学习</strong>。三者的交汇处存在一个明确的研究空白——尚无人将 SSM 应用于 B-Rep 拓扑结构，而这恰恰是工业 3D 模型最自然的数据表示。</p>
+
+<!-- ─────────────────────────────────────────── -->
+<h3>1.1 3D SSM：序列化方法的演进谱系</h3>
+
+<p>3D SSM 的核心挑战在于：SSM 是 <strong>1D 序列处理器</strong>，而 3D 数据（点云、体素、网格）天然无序。所有 3D SSM 研究的第一步都是<strong>序列化</strong>——将 N 维数据映射为 1D 序列。以下按序列化策略的复杂度递进梳理核心论文。</p>
+
+<h4>1.1.1 空间填充曲线方法</h4>
+
+<div class="card">
+<p><strong>PointMamba</strong>（NeurIPS 2024）<a class="cite" href="https://arxiv.org/html/2507.17296v1" target="_blank">[链接]</a></p>
+<ul>
+  <li><strong>序列化</strong>：Hilbert 曲线 + Trans-Hilbert 曲线，从不同方向扫描关键点生成两种 token 序列</li>
+  <li><strong>架构</strong>：非分层 Mamba 编码器，N 个 Mamba block（LN + Selective SSM），支持 MAE 式自监督预训练</li>
+  <li><strong>数据集</strong>：ModelNet40、ScanObjectNN、ShapeNetPart</li>
+  <li><strong>性能</strong>：ModelNet40 上超 Point-MAE 0.4%；显著降低 GPU 内存和 FLOPs</li>
+  <li><strong>局限</strong>：单方向因果建模，对输入顺序高度敏感；仅两种序列化方式</li>
+  <li><strong>开源</strong>：是（<a class="cite" href="https://github.com/LMD0311/PointMamba" target="_blank">GitHub</a>）</li>
+</ul>
+</div>
+
+<div class="card">
+<p><strong>CloudMamba</strong>（AAAI 2026）<a class="cite" href="https://arxiv.org/html/2511.07823v1" target="_blank">[链接]</a></p>
+<ul>
+  <li><strong>序列化</strong>：序列扩展与合并（Sequence Expanding & Merging）——沿每个坐标轴分别序列化点，因果推理后合并，比 Hilbert 曲线更稳定</li>
+  <li><strong>核心创新</strong>：<strong>GS6（Grouped Selective State Space）</strong>——按维度分组共享参数（分组率=3），缓解 S6 的过拟合问题</li>
+  <li><strong>架构</strong>：Hexa-orientation Mamba Block（含 ChainedMamba）+ Downsampling/Upsampling</li>
+  <li><strong>数据集</strong>：ModelNet40 (93.65% OA)、ScanObjectNN、ShapeNet、S3DIS</li>
+  <li><strong>开源</strong>：是（<a class="cite" href="https://github.com/Point-Cloud-Learning/CloudMamba" target="_blank">GitHub</a>）</li>
+</ul>
+</div>
+
+<div class="card">
+<p><strong>HydraMamba</strong>（ACM MM 2025）<a class="cite" href="https://arxiv.org/html/2507.19778v1" target="_blank">[链接]</a></p>
+<ul>
+  <li><strong>序列化</strong>：Shuffle Serialization——将 Hilbert 曲线 6 种变体随机分配给不同层，每层从不同视角推断结构</li>
+  <li><strong>核心创新</strong>：ConvBiS6 层（双向 S6 + 1D grid 卷积分支）+ MHS6（多头 S6）</li>
+  <li><strong>数据集</strong>：ModelNet40、ShapeNet、S3DIS</li>
+  <li><strong>开源</strong>：是（<a class="cite" href="https://github.com/Point-Cloud-Learning/HydraMamba" target="_blank">GitHub</a>）</li>
+</ul>
+</div>
+
+<h4>1.1.2 可微/可学习序列化方法</h4>
+
+<div class="card">
+<p><strong>DM3D（Deformable Mamba）</strong>（NeurIPS 2026）<a class="cite" href="https://arxiv.org/html/2512.03424" target="_blank">[链接]</a></p>
+<ul>
+  <li><strong>序列化</strong>：<strong>Offset-guided Gaussian Sequencing</strong>——将序列化视为连续优化过程，而非离散 token 重排</li>
+  <li><strong>核心机制</strong>：
+    <ul>
+      <li><strong>DSR（可变形空间重采样）</strong>：OffsetNet 预测空间偏移量 Δp，引导 Gaussian-based KNN 重采样</li>
+      <li><strong>GDR（高斯可微重排序）</strong>：预测序列偏移量 Δt，通过 Gaussian kernel 分配 token 特征到近邻位置</li>
+    </ul>
+  </li>
+  <li><strong>架构</strong>：三 SSM 分支——F-SSM（前向）、C-SSM（通道翻转后向）、D-SSM（可变形，核心）</li>
+  <li><strong>创新点</strong>：CASU（连续性感知状态更新）+ Tri-Path Fusion</li>
+  <li><strong>数据集</strong>：ModelNet40、ScanObjectNN、ShapeNetPart（SOTA/competitive）</li>
+</ul>
+</div>
+
+<div class="card">
+<p><strong>StruMamba3D</strong>（ICCV 2025）<a class="cite" href="https://arxiv.org/html/2506.21541v1" target="_blank">[链接]</a></p>
+<ul>
+  <li><strong>核心创新</strong>：为 SSM 隐藏状态赋予<strong>空间位置属性</strong>（spatial states），作为点间空间依赖的代理</li>
+  <li><strong>序列长度自适应</strong>：缓解预训练与下游任务之间的序列长度差异</li>
+  <li><strong>性能</strong>：ModelNet40 达 95.1%；ScanObjectNN 最难 split 达 92.75%；ShapeNetPart mIoU 85.0%</li>
+  <li><strong>亮点</strong>：四个下游任务 SOTA，是目前 3D 点云 SSM 的最强结果之一</li>
+</ul>
+</div>
+
+<h4>1.1.3 混合架构方法</h4>
+
+<div class="card">
+<p><strong>PointLAMA</strong>（2025）<a class="cite" href="https://arxiv.org/html/2507.17296v1" target="_blank">[链接]</a></p>
+<ul>
+  <li><strong>序列化</strong>：任务感知——分类用 Hilbert 曲线，分割用轴排序</li>
+  <li><strong>核心创新</strong>：<strong>PMLA（Point-wise Multi-head Latent Attention）</strong>，与 Mamba 共享 latent space，增强局部上下文建模</li>
+  <li><strong>预训练</strong>：条件扩散——对扰动特征序列进行 denoising，不依赖显式点级重建</li>
+  <li><strong>性能</strong>：ModelNet40 达 94.5%（超 PointMamba 0.9%）；ShapeNetPart 85.5% mIoU（自监督 SOTA）</li>
+  <li><strong>局限</strong>：未公开代码；缺乏效率分析</li>
+</ul>
+</div>
+
+<div class="card">
+<p><strong>Pamba / MambaD</strong>（AAAI 2025）<a class="cite" href="https://arxiv.org/html/2406.17442v1" target="_blank">[链接]</a></p>
+<ul>
+  <li><strong>序列化</strong>：多路径序列化——不同路径分配给不同 block</li>
+  <li><strong>核心创新</strong>：<strong>ConvMamba Block</strong>——卷积与 Mamba 结合，补偿 Mamba 局部几何建模和单方向建模的不足</li>
+  <li><strong>数据集</strong>：ScanNet v2、ScanNet200、S3DIS、nuScenes（语义分割 SOTA）</li>
+</ul>
+</div>
+
+<h4>1.1.4 时空 4D 与结构化数据方法</h4>
+
+<div class="card">
+<p><strong>UST-SSM</strong>（2025）<a class="cite" href="https://arxiv.org/html/2508.14604" target="_blank">[链接]</a></p>
+<ul>
+  <li><strong>序列化</strong>：<strong>STSS（时空选择扫描）</strong>——prompt-guided clustering 将时空距离远但语义相似的点聚类 → 簇内 Hilbert 排序 → 沿时间维度扫描</li>
+  <li><strong>创新</strong>：STSA（时空结构聚合，4D KNN 邻域传播）+ TIS（时间交互采样，扩展时间感受野）</li>
+  <li><strong>数据集</strong>：MSR-Action3D、NTU RGB+D（3D 动作识别）、Synthia 4D（4D 语义分割）</li>
+  <li><strong>开源</strong>：是（<a class="cite" href="https://github.com/wangzy01/UST-SSM" target="_blank">GitHub</a>）</li>
+</ul>
+</div>
+
+<div class="card">
+<p><strong>Mamba4D</strong>（CVPR 2025）<a class="cite" href="https://arxiv.org/html/2405.14338v2" target="_blank">[链接]</a></p>
+<ul>
+  <li><strong>架构</strong>：时空解耦——Intra-frame Spatial Mamba（帧内空间维编码局部几何）+ Inter-frame Temporal Mamba（帧间时间维传递 token）</li>
+  <li><strong>亮点</strong>：纯 SSM 4D backbone，线性复杂度</li>
+</ul>
+</div>
+
+<div class="card">
+<p><strong>Voxel Mamba</strong>（NeurIPS 2024）</p>
+<ul>
+  <li><strong>序列化</strong>：Group-free 策略——整个体素空间通过 Hilbert 曲线序列化为单一序列</li>
+  <li><strong>创新</strong>：Dual-scale SSM Block 扩大 1D 曲线上的感受野</li>
+  <li><strong>数据集</strong>：Waymo Open Dataset、nuScenes（3D 目标检测）</li>
+  <li><strong>开源</strong>：是（<a class="cite" href="https://github.com/zhangguowen/VoxelMamba" target="_blank">GitHub</a>）</li>
+</ul>
+</div>
+
+<div class="card">
+<p><strong>MeshMamba</strong>（2025）<a class="cite" href="https://arxiv.org/html/2507.15212v1" target="_blank">[链接]</a></p>
+<ul>
+  <li><strong>序列化</strong>：基于身体部位 UV 映射和模板网格 3D 坐标的顶点序列化</li>
+  <li><strong>应用</strong>：3D articulated mesh 生成（MambaDiff3D）+ 人体网格重建（Mamba-HMR）</li>
+  <li><strong>亮点</strong>：可处理 10,000+ 顶点的人体网格</li>
+</ul>
+</div>
+
+<div class="card">
+<p><strong>Mamba-CAD</strong>（AAAI 2025）<a class="cite" href="https://github.com/Sunny-Hack/Code-for-Mamba-CAD-AAAI-2025-" target="_blank">[链接]</a></p>
+<ul>
+  <li><strong>序列化</strong>：将参数化 CAD 命令序列（CSG 表示）视为离散语言序列，固定长度 N=128</li>
+  <li><strong>架构</strong>：基于 Mamba 的 encoder-decoder + CAD 重建预训练 + GAN latent 生成</li>
+  <li><strong>数据集</strong>：自建 77,078 个 CAD 模型；命令数 61-128</li>
+  <li><strong>关键局限</strong>：<strong>仅处理 CSG 表示，明确排除 B-Rep</strong>——论文指出 B-Rep 缺乏构建历史，难以参数化为命令序列</li>
+</ul>
+</div>
+
+<h4>1.1.5 序列化方法总结</h4>
+
+<table>
+<tr>
+  <th style="width:15%">方法</th>
+  <th style="width:20%">序列化策略</th>
+  <th style="width:15%">数据表示</th>
+  <th style="width:15%">会议/年份</th>
+  <th style="width:15%">核心创新</th>
+  <th style="width:20%">局限</th>
+</tr>
+<tr>
+  <td>PointMamba</td>
+  <td>Hilbert + Trans-Hilbert</td>
+  <td>点云</td>
+  <td>NeurIPS 2024</td>
+  <td>首个 3D Mamba 编码器</td>
+  <td>单方向，顺序敏感</td>
+</tr>
+<tr>
+  <td>CloudMamba</td>
+  <td>坐标轴序列扩展+合并</td>
+  <td>点云</td>
+  <td>AAAI 2026</td>
+  <td>GS6 分组参数共享</td>
+  <td>稀疏几何鲁棒性待验证</td>
+</tr>
+<tr>
+  <td>DM3D</td>
+  <td>可微偏移引导 Gaussian</td>
+  <td>点云</td>
+  <td>NeurIPS 2026</td>
+  <td>端到端可微序列化</td>
+  <td>额外计算开销</td>
+</tr>
+<tr>
+  <td>PointLAMA</td>
+  <td>任务感知 Hilbert/轴排序</td>
+  <td>点云</td>
+  <td>2025</td>
+  <td>Latent Attention + Mamba</td>
+  <td>未开源</td>
+</tr>
+<tr>
+  <td>StruMamba3D</td>
+  <td>Hilbert + 空间状态</td>
+  <td>点云</td>
+  <td>ICCV 2025</td>
+  <td>空间位置属性隐藏状态</td>
+  <td>自监督微调效率待分析</td>
+</tr>
+<tr>
+  <td>UST-SSM</td>
+  <td>Prompt-guided 聚类+Hilbert</td>
+  <td>4D 点云视频</td>
+  <td>2025</td>
+  <td>时空选择扫描</td>
+  <td>3D 静态覆盖少</td>
+</tr>
+<tr>
+  <td>Voxel Mamba</td>
+  <td>Group-free Hilbert</td>
+  <td>体素</td>
+  <td>NeurIPS 2024</td>
+  <td>Dual-scale SSM</td>
+  <td>分辨率受限</td>
+</tr>
+<tr>
+  <td>MeshMamba</td>
+  <td>UV 映射 + 模板坐标</td>
+  <td>3D 网格</td>
+  <td>2025</td>
+  <td>10k+ 顶点处理</td>
+  <td>序列长度敏感</td>
+</tr>
+<tr>
+  <td>Mamba-CAD</td>
+  <td>CSG 命令序列</td>
+  <td>参数化 CAD</td>
+  <td>AAAI 2025</td>
+  <td>更长 CAD 序列生成</td>
+  <td><span class="tag red">不含 B-Rep</span></td>
+</tr>
+</table>
+
+<div class="callout">
+  <div class="label">关键观察</div>
+  <p>所有 3D SSM 方法都在与<strong>"无序数据的序列化"</strong>搏斗——用 Hilbert 曲线、坐标轴排序、可微偏移、prompt 引导聚类等手段将无序变有序。但<strong>没有任何方法利用 B-Rep 拓扑结构作为序列化依据</strong>。Mamba-CAD 是最接近的，但明确排除了 B-Rep。</p>
+</div>
+
+<!-- ─────────────────────────────────────────── -->
+<h3>1.2 B-Rep 深度学习：从图网络到 Transformer</h3>
+
+<p>B-Rep（Boundary Representation）是 CAD 领域的标准数据结构，通过<strong>面（Face）、边（Edge）、顶点（Vertex）</strong>及其拓扑关系来描述 3D 实体。与点云不同，B-Rep 天然包含<strong>拓扑连接关系</strong>——这为序列化提供了结构化的基础。</p>
+
+<h4>1.2.1 基础方法</h4>
+
+<table>
+<tr>
+  <th>方法</th>
+  <th>会议/年份</th>
+  <th>核心思路</th>
+  <th>数据表示</th>
+  <th>关键性能</th>
+  <th>链接</th>
+</tr>
+<tr>
+  <td><strong>BRepNet</strong></td>
+  <td>ICCV 2021</td>
+  <td>定向 coedge 定义拓扑卷积核；face-adjacency graph 上消息传递</td>
+  <td>B-Rep coedge</td>
+  <td>Fusion360: 92.52% acc, 77.10% IoU</td>
+  <td><a class="cite" href="https://arxiv.org/html/2104.00706v2" target="_blank">[论文]</a></td>
+</tr>
+<tr>
+  <td><strong>UV-Net</strong></td>
+  <td>CVPR 2021</td>
+  <td>双分支：UV 网格 CNN（面几何）+ 图卷积（面邻接）</td>
+  <td>B-Rep UV grid</td>
+  <td>SolidLetters: 97.24%</td>
+  <td><a class="cite" href="https://arxiv.org/html/2006.10211v2" target="_blank">[论文]</a></td>
+</tr>
+</table>
+
+<h4>1.2.2 Transformer 方法（当前主流）</h4>
+
+<table>
+<tr>
+  <th>方法</th>
+  <th>年份</th>
+  <th>核心创新</th>
+  <th>任务</th>
+  <th>链接</th>
+</tr>
+<tr>
+  <td><strong>BRepFormer</strong></td>
+  <td>2025</td>
+  <td>拓扑关系矩阵 M_d/M_a/M_c 编码；grouped query attention + attention bias</td>
+  <td>加工特征识别</td>
+  <td><a class="cite" href="https://arxiv.org/html/2504.07378v3" target="_blank">[论文]</a></td>
+</tr>
+<tr>
+  <td><strong>BRT</strong></td>
+  <td>2025</td>
+  <td>几何嵌入（vertex/edge/face → latent）+ 拓扑嵌入聚合</td>
+  <td>分类、特征识别、操作分割</td>
+  <td><a class="cite" href="https://arxiv.org/html/2504.07134v2" target="_blank">[论文]</a></td>
+</tr>
+<tr>
+  <td><strong>Brep2Shape</strong></td>
+  <td>2026</td>
+  <td>Dual Transformer，B-Rep tokenization，边界与形状表示对齐</td>
+  <td>语义分割</td>
+  <td><a class="cite" href="https://arxiv.org/html/2602.07429v1" target="_blank">[论文]</a></td>
+</tr>
+<tr>
+  <td><strong>MTM</strong></td>
+  <td>2025</td>
+  <td>Masked Topology Modeling + MoCo 对比学习</td>
+  <td>自监督预训练</td>
+  <td><a class="cite" href="https://arxiv.org/html/2607.20642v1" target="_blank">[论文]</a></td>
+</tr>
+</table>
+
+<h4>1.2.3 B-Rep 生成方法</h4>
+
+<table>
+<tr>
+  <th>方法</th>
+  <th>会议/年份</th>
+  <th>生成范式</th>
+  <th>序列化方式</th>
+  <th>链接</th>
+</tr>
+<tr>
+  <td><strong>BRepGen</strong></td>
+  <td>2024</td>
+  <td>扩散模型</td>
+  <td>B-Rep → 层次树 → 固定图拓扑</td>
+  <td><a class="cite" href="https://arxiv.org/html/2401.15563v1" target="_blank">[论文]</a></td>
+</tr>
+<tr>
+  <td><strong>AutoBrep</strong></td>
+  <td>SIGGRAPH Asia 2025</td>
+  <td>自回归 Transformer（decoder-only）</td>
+  <td>BFS 顺序 face identifier + UV-grid shape codes</td>
+  <td><a class="cite" href="https://arxiv.org/html/2512.03018v1" target="_blank">[论文]</a></td>
+</tr>
+<tr>
+  <td><strong>BrepGPT</strong></td>
+  <td>2025</td>
+  <td>自回归 Transformer</td>
+  <td>Voronoi Half-Patch (VHP) + VQ-VAE</td>
+  <td><a class="cite" href="https://arxiv.org/html/2511.22171" target="_blank">[论文]</a></td>
+</tr>
+<tr>
+  <td><strong>BrepVGAE</strong></td>
+  <td>CVPR 2026</td>
+  <td>变分图自编码器</td>
+  <td>B-Rep → 稀疏同构图 + set-based decoding</td>
+  <td><a class="cite" href="https://openaccess.thecvf.com/content/CVPR2026/papers/Guo_BrepVGAE" target="_blank">[论文]</a></td>
+</tr>
+<tr>
+  <td><strong>HoLa</strong></td>
+  <td>2025</td>
+  <td>单一隐空间融合</td>
+  <td>拓扑连接与低阶原语几何绑定</td>
+  <td><a class="cite" href="https://arxiv.org/html/2504.14257v3" target="_blank">[论文]</a></td>
+</tr>
+</table>
+
+<h4>1.2.4 B-Rep 数据集</h4>
+
+<table>
+<tr>
+  <th>数据集</th>
+  <th>规模</th>
+  <th>表示方式</th>
+  <th>任务</th>
+  <th>来源</th>
+</tr>
+<tr>
+  <td><strong>ABC Dataset</strong></td>
+  <td>100 万+ 模型，1300 万+ B-Rep 体</td>
+  <td>B-Rep / STEP</td>
+  <td>通用预训练、分类、分割</td>
+  <td>Onshape 公开项目</td>
+</tr>
+<tr>
+  <td><strong>Fusion 360 Gallery</strong></td>
+  <td>35,858 模型</td>
+  <td>B-Rep + 面操作标注</td>
+  <td>分割</td>
+  <td>Autodesk</td>
+</tr>
+<tr>
+  <td><strong>MFCAD / MFCAD++</strong></td>
+  <td>15,488 形状</td>
+  <td>B-Rep / 3D Mesh</td>
+  <td>加工特征识别</td>
+  <td>—</td>
+</tr>
+<tr>
+  <td><strong>SolidLetters</strong></td>
+  <td>合成 26 类</td>
+  <td>B-Rep</td>
+  <td>分类</td>
+  <td>—</td>
+</tr>
+<tr>
+  <td><strong>DeepCAD</strong></td>
+  <td>178,238 模型</td>
+  <td>参数化序列</td>
+  <td>生成</td>
+  <td>Onshape FeatureScript</td>
+</tr>
+<tr>
+  <td><strong>A2Z-10M+</strong></td>
+  <td>100 万模型，1000 万+ 标注</td>
+  <td>B-Rep co-edge 标注</td>
+  <td>多模态预训练</td>
+  <td>CVPR 2026</td>
+</tr>
+</table>
+
+<div class="callout">
+  <div class="label">关键观察</div>
+  <p>B-Rep 深度学习已从 GNN（BRepNet, UV-Net）发展到 Transformer（BRepFormer, BRT, Brep2Shape），再到生成模型（BRepGen, AutoBrep, BrepGPT）。AutoBrep 已经用 <strong>BFS 顺序的 face identifier</strong> 将 B-Rep 拓扑序列化——这证明 B-Rep 拓扑确实可以序列化。但<strong>所有方法都用 Transformer 或 GNN，没有任何方法用 SSM</strong>。</p>
+</div>
+
+<!-- ─────────────────────────────────────────── -->
+<h3>1.3 FEA 仿真与深度学习</h3>
+
+<h4>1.3.1 网格图神经网络（主流）</h4>
+
+<div class="card">
+<p><strong>MeshGraphNet</strong>（DeepMind, 2020）<a class="cite" href="https://www.deepmind.com/publications/learning-mesh-based-simulation-with-graph-networks" target="_blank">[链接]</a></p>
+<ul>
+  <li><strong>架构</strong>：Encoder-Processor-Decoder 三段式</li>
+  <li><strong>数据表示</strong>：FEA 网格直接表示为图——节点=网格点，边=拓扑连接</li>
+  <li><strong>速度</strong>：比训练时的仿真快 1-2 个数量级</li>
+  <li><strong>应用</strong>：空气动力学、结构力学、织物动力学</li>
+</ul>
+</div>
+
+<div class="card">
+<p><strong>X-MeshGraphNet</strong>（NVIDIA, 2024）<a class="cite" href="https://arxiv.org/pdf/2411.17164.pdf" target="_blank">[链接]</a></p>
+<ul>
+  <li>图分区 + halo 节点实现分布式可扩展训练</li>
+  <li>支持从 STL 几何文件直接构建图（推理时无需 FEA 网格）</li>
+  <li>多尺度图：迭代合并粗/细分辨率点云</li>
+</ul>
+</div>
+
+<h4>1.3.2 SSM 在物理仿真中的初步应用</h4>
+
+<div class="card">
+<p><strong>FR-Mamba</strong>（2025）<a class="cite" href="https://arxiv.org/html/2505.16083" target="_blank">[链接]</a> — 目前唯一直接将 SSM 用于 FEA 时序的工作</p>
+<ul>
+  <li><strong>架构</strong>：FNO（捕获全局空间特征）+ Mamba（线性复杂度建模长程时间依赖）</li>
+  <li><strong>问题</strong>：稀疏传感器测量下的物理场重建</li>
+  <li><strong>意义</strong>：证明了 SSM 在物理场时序建模中的可行性和效率优势</li>
+</ul>
+</div>
+
+<h4>1.3.3 FEA 数据集</h4>
+
+<table>
+<tr>
+  <th>数据集</th>
+  <th>规模</th>
+  <th>内容</th>
+  <th>用途</th>
+</tr>
+<tr>
+  <td><strong>DrivAerML</strong></td>
+  <td>500 种几何变体</td>
+  <td>STL 网格 + CFD 场数据</td>
+  <td>汽车空气动力学</td>
+</tr>
+<tr>
+  <td><strong>REALM</strong></td>
+  <td>11 个高保真数据集</td>
+  <td>多物理场仿真</td>
+  <td>神经代理基准</td>
+</tr>
+<tr>
+  <td><strong>ABC Dataset</strong></td>
+  <td>100 万+ 模型</td>
+  <td>B-Rep / STEP</td>
+  <td>通用 CAD 预训练</td>
+</tr>
+</table>
+
+<!-- ─────────────────────────────────────────── -->
+<h3>1.4 研究空白分析</h3>
+
+<div class="card gap-card">
+<p style="font-size:16px; font-weight:700; color:var(--amber-light); margin-bottom:12px;">核心发现：B-Rep + SSM = 明确的研究空白</p>
+
+<p>三个领域调研揭示了一个清晰的交叉空白：</p>
+
+<table>
+<tr>
+  <th>维度</th>
+  <th>3D SSM 现状</th>
+  <th>B-Rep 深度学习现状</th>
+  <th>交叉空白</th>
+</tr>
+<tr>
+  <td>数据表示</td>
+  <td>点云、体素、网格</td>
+  <td>B-Rep 拓扑（face/edge/coedge）</td>
+  <td><span class="tag red">无 SSM 处理 B-Rep</span></td>
+</tr>
+<tr>
+  <td>序列化方法</td>
+  <td>Hilbert 曲线、坐标排序、可微偏移</td>
+  <td>BFS face 遍历、coedge 拓扑遍历</td>
+  <td><span class="tag red">拓扑序列化 + SSM 未结合</span></td>
+</tr>
+<tr>
+  <td>模型架构</td>
+  <td>Mamba block、双向 SSM、ConvMamba</td>
+  <td>GNN、Transformer、扩散模型</td>
+  <td><span class="tag red">B-Rep 上无 SSM 架构</span></td>
+</tr>
+<tr>
+  <td>工业任务</td>
+  <td>通用 3D 分类/分割</td>
+  <td>CAD 分类、特征识别、生成</td>
+  <td><span class="tag amber">工业 CAD + SSM 未探索</span></td>
+</tr>
+</table>
+
+<h4>为什么 B-Rep 拓扑是 SSM 的天然序列？</h4>
+
+<p>3D 点云 SSM 的核心痛苦是<strong>无序数据的人为序列化</strong>——Hilbert 曲线、坐标排序都是"强行"赋予顺序，与数据的内在结构无关。而 B-Rep <strong>天然包含拓扑顺序</strong>：</p>
+
+<ul>
+  <li><strong>Coedge 遍历序</strong>：B-Rep 的 coedge（有向半边）构成环（loop），沿环遍历本身就是有序的——面边界天然是一个序列</li>
+  <li><strong>Face 邻接序</strong>：通过 BFS/DFS 遍历 face-adjacency graph，得到面的有序序列（AutoBrep 已用 BFS 序列化）</li>
+  <li><strong>UV 参数序</strong>：每个面的 UV 参数域天然有序（UV-Net 已将面编码为 UV 网格）</li>
+  <li><strong>建模操作序</strong>：CAD 模型的创建过程本身是有序的（拉伸、旋转、倒角等操作序列）</li>
+</ul>
+
+<div class="callout">
+  <div class="label">核心假设</div>
+  <p><strong>利用 B-Rep 拓扑关系作为 SSM 的序列化依据，可以避免点云 SSM 中"无序数据人为序列化"的根本矛盾，同时保留 SSM 的线性复杂度优势。</strong>这是一个从"无序 → 有序"到"天然有序 → 序列化"的范式转变。</p>
+</div>
+
+</div>
+
+<hr class="divider">
+
+<!-- ============================================================ -->
+<!-- PART II: EXPERIMENTAL PLAN -->
+<!-- ============================================================ -->
+
+<h2><span class="num">II</span> 实验方案</h2>
+
+<h3>2.1 研究问题与总体假设</h3>
+
+<div class="card highlight">
+<p><strong>研究问题</strong>：能否利用 B-Rep 拓扑结构作为 SSM 的天然序列化依据，设计出在工业 CAD 任务（分类、特征识别、分割）上兼具效率（线性复杂度）和精度（超越 GNN/Transformer 基线）的 3D 模型分析架构？</p>
+<p><strong>核心假设（H1）</strong>：B-Rep 拓扑遍历序（coedge 环序 / face BFS 序）作为 SSM 输入序列，优于 Hilbert 曲线等人为序列化策略，因为前者保留了数据的内在拓扑关系。</p>
+<p><strong>辅助假设（H2）</strong>：SSM 的隐藏状态可以编码 B-Rep 拓扑传播（类似 GNN 的消息传递），但以 O(n) 复杂度实现，在面数较多的大模型上效率优于 O(n²) 的 Transformer。</p>
+<p><strong>辅助假设（H3）</strong>：将 SSM 用于 FEA 仿真时序数据（时变物理场），可以替代 MeshGraphNet 的逐时间步图消息传递，以线性复杂度建模长时序依赖。</p>
+</div>
+
+<!-- ─────────────────────────────────────────── -->
+<h3>2.2 实验分阶段设计</h3>
+
+<div class="phase phase-1">
+  <div class="phase-header">
+    <span class="phase-icon">1</span>
+    Phase 1：B-Rep 拓扑序列化策略（验证 H1）
+  </div>
+  <div class="phase-body">
+    <h4>目标</h4>
+    <p>设计并对比多种 B-Rep 拓扑序列化策略，验证"拓扑序优于人为序"的假设。</p>
+
+    <h4>序列化策略设计</h4>
+    <table>
+      <tr>
+        <th>策略 ID</th>
+        <th>名称</th>
+        <th>原理</th>
+        <th>预期优势</th>
+      </tr>
+      <tr>
+        <td>S1</td>
+        <td>Coedge-Loop Scan</td>
+        <td>沿每个面的 coedge 环遍历，将面边界曲线的采样点排列为序列；面间按 BFS 序连接</td>
+        <td>保留面边界拓扑完整性</td>
+      </tr>
+      <tr>
+        <td>S2</td>
+        <td>Face-BFS Scan</td>
+        <td>在 face-adjacency graph 上 BFS 遍历，每个面编码为 UV 网格特征向量，面序列输入 SSM</td>
+        <td>最接近 AutoBrep 的序列化方式</td>
+      </tr>
+      <tr>
+        <td>S3</td>
+        <td>Topology-Geometry Interleaved Scan</td>
+        <td>交替序列化拓扑信息（face type, edge convexity）和几何信息（UV grid），让 SSM 同时获取两者</td>
+        <td>拓扑与几何信息融合</td>
+      </tr>
+      <tr>
+        <td>S4（基线）</td>
+        <td>Hilbert Point Scan</td>
+        <td>从 B-Rep 采样点云，用 Hilbert 曲线序列化（PointMamba 方法）</td>
+        <td>对照：人为序列化</td>
+      </tr>
+      <tr>
+        <td>S5（基线）</td>
+        <td>Random Scan</td>
+        <td>面随机排列</td>
+        <td>对照：无序基线</td>
+      </tr>
+    </table>
+
+    <h4>实验设置</h4>
+    <ul>
+      <li><strong>骨干网络</strong>：标准 Mamba block（6 层，hidden=256），统一架构，仅序列化策略不同</li>
+      <li><strong>数据集</strong>：Fusion 360 Gallery（35,858 模型，8 类 face 分割）</li>
+      <li><strong>评估指标</strong>：Face 分类准确率、IoU、序列化耗时</li>
+      <li><strong>对比</strong>：S1-S3 vs S4-S5，Friedman 检验评估序列化策略对性能的显著性</li>
+    </ul>
+
+    <h4>预期结果</h4>
+    <p>S1/S2（拓扑序）应显著优于 S4（Hilbert）和 S5（随机），证明 B-Rep 拓扑天然有序性确实有利于 SSM 的序列建模。</p>
+  </div>
+</div>
+
+<div class="phase phase-2">
+  <div class="phase-header">
+    <span class="phase-icon">2</span>
+    Phase 2：BRepMamba 架构设计与评估（验证 H1 + H2）
+  </div>
+  <div class="phase-body">
+    <h4>目标</h4>
+    <p>设计完整的 BRepMamba 架构，在多个 CAD 任务上与 GNN 和 Transformer 基线全面对比。</p>
+
+    <h4>架构设计</h4>
+    <div class="code-block">输入: B-Rep 模型
+  │
+  ├─ Face Encoder (UV-Grid CNN → 64d embedding, 复用 UV-Net 的面编码器)
+  ├─ Edge Encoder (1D CNN on UV curve → 64d)
+  ├─ Topology Encoder (coedge adjacency → topology features)
+  │
+  ▼
+  Topology-aware Serialization Module
+  │  (Phase 1 选出的最优策略, 如 S1: Coedge-Loop + Face-BFS)
+  │
+  ▼
+  Token Sequence: [face_1, face_2, ..., face_n]
+  │  每个 face token = UV-Grid embedding ⊕ topology embedding
+  │
+  ▼
+  Bidirectional Mamba Blocks × 6
+  │  (双向 SSM: 前向 + 后向, 融合两个方向的隐藏状态)
+  │  (GS6 分组参数共享, 缓解过拟合 — 借鉴 CloudMamba)
+  │
+  ▼
+  Task Heads:
+  ├─ Classification: Global pooling → Linear
+  ├─ Segmentation: Per-face prediction (face-level mIoU)
+  └─ Feature Recognition: Per-face multi-class</div>
+
+    <h4>关键设计决策</h4>
+    <table>
+      <tr>
+        <th>设计点</th>
+        <th>选择</th>
+        <th>理由</th>
+      </tr>
+      <tr>
+        <td>方向性</td>
+        <td>双向 Mamba</td>
+        <td>B-Rep 拓扑无因果方向，双向扫描消除方向偏差（借鉴 VSSD 非因果思想）</td>
+      </tr>
+      <tr>
+        <td>局部增强</td>
+        <td>ConvMamba Block</td>
+        <td>B-Rep 面间局部几何依赖需要卷积分支补偿（借鉴 Pamba 的 ConvMamba）</td>
+      </tr>
+      <tr>
+        <td>参数共享</td>
+        <td>GS6 分组共享</td>
+        <td>B-Rep face 特征维度多（UV grid 64d + topology 32d），GS6 防过拟合（借鉴 CloudMamba）</td>
+      </tr>
+      <tr>
+        <td>空间状态</td>
+        <td>Spatial State Injection</td>
+        <td>为隐藏状态赋予 face 的 3D 质心坐标，增强空间依赖建模（借鉴 StruMamba3D）</td>
+      </tr>
+    </table>
+
+    <h4>评估任务与数据集</h4>
+    <table>
+      <tr>
+        <th>任务</th>
+        <th>数据集</th>
+        <th>指标</th>
+        <th>基线方法</th>
+      </tr>
+      <tr>
+        <td>Face 分类/分割</td>
+        <td>Fusion 360 Gallery (35,858 模型)</td>
+        <td>Accuracy, IoU</td>
+        <td>BRepNet (92.52%/77.10%), UV-Net, BRepFormer, PointNet++</td>
+      </tr>
+      <tr>
+        <td>加工特征识别</td>
+        <td>MFCAD++ (15,488+ 模型)</td>
+        <td>Accuracy, IoU</td>
+        <td>BRepNet, UV-Net (77.87%/89.03%), BRepGAT</td>
+      </tr>
+      <tr>
+        <td>CAD 分类</td>
+        <td>SolidLetters (26 类)</td>
+        <td>Accuracy</td>
+        <td>UV-Net (97.24%), PointNet, DGCNN</td>
+      </tr>
+      <tr>
+        <td>大规模预训练</td>
+        <td>ABC Dataset (100 万+ 模型)</td>
+        <td>下游迁移性能</td>
+        <td>MTM 自监督, Brep2Shape</td>
+      </tr>
+    </table>
+
+    <h4>效率对比实验</h4>
+    <ul>
+      <li>记录参数量、FLOPs、推理延迟、GPU 显存占用</li>
+      <li>特别关注<strong>面数 scaling</strong>：在 face 数 = 50, 100, 200, 500, 1000 的模型上测效率</li>
+      <li>预期：SSM 的 O(n) 在大模型上显著优于 Transformer 的 O(n²)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="phase phase-3">
+  <div class="phase-header">
+    <span class="phase-icon">3</span>
+    Phase 3：FEA 时空代理模型（验证 H3）
+  </div>
+  <div class="phase-body">
+    <h4>目标</h4>
+    <p>将 SSM 扩展到 FEA 仿真时序数据，用 SSM 替代 MeshGraphNet 的逐时间步图消息传递，建模时变物理场。</p>
+
+    <h4>问题定义</h4>
+    <p>给定 CAD 模型的 B-Rep 结构和边界条件，预测 FEA 仿真在多个时间步上的物理场（如应力场、位移场、温度场）。</p>
+
+    <h4>架构设计：BRepMamba-FEA</h4>
+    <div class="code-block">输入: B-Rep 模型 + 边界条件 + 材料属性
+  │
+  ▼
+  Phase 2 的 BRepMamba Encoder → 面级特征序列
+  │
+  ▼
+  Spatial Mamba (帧内): 在每个时间步对面序列做空间建模
+  │
+  ▼
+  Temporal Mamba (帧间): 沿时间维度传递隐藏状态
+  │  (借鉴 Mamba4D 的时空解耦设计)
+  │
+  ▼
+  Decoder: 面级特征 → 节点级物理场预测
+  │  (通过 UV grid 反映射到面表面)</div>
+
+    <h4>实验设置</h4>
+    <table>
+      <tr>
+        <th>项目</th>
+        <th>设置</th>
+      </tr>
+      <tr>
+        <td>数据集</td>
+        <td>DrivAerML (500 变体, CFD 场数据) + 自建 FEA 数据集（结构力学）</td>
+      </tr>
+      <tr>
+        <td>基线</td>
+        <td>MeshGraphNet, X-MeshGraphNet, FR-Mamba (FNO+Mamba)</td>
+      </tr>
+      <tr>
+        <td>评估指标</td>
+        <td>相对 L2 误差、推理加速比（vs FEA 求解器）、长时序稳定性</td>
+      </tr>
+      <tr>
+        <td>关键实验</td>
+        <td>时间步数 = 10, 50, 100, 200, 500 时的精度与效率对比</td>
+      </tr>
+    </table>
+
+    <h4>预期优势</h4>
+    <ul>
+      <li>SSM 的线性复杂度在长时序（200+ 步）上应优于 MeshGraphNet 的逐步 GNN</li>
+      <li>B-Rep 拓扑序作为空间扫描策略，比 DrivAerML 的 STL 点云 k-NN 图更有结构信息</li>
+      <li>FR-Mamba 已验证 FNO+Mamba 可行，本方案进一步用 B-Rep 拓扑替代 FNO 的空间建模</li>
+    </ul>
+  </div>
+</div>
+
+<div class="phase phase-4">
+  <div class="phase-header">
+    <span class="phase-icon">4</span>
+    Phase 4：理论分析与可解释性（补充）
+  </div>
+  <div class="phase-body">
+    <h4>目标</h4>
+    <p>分析 BRepMamba 的隐藏状态与 GNN 消息传递的对应关系，建立理论桥梁。</p>
+
+    <h4>分析内容</h4>
+    <ul>
+      <li><strong>消息传递对偶</strong>：SSM 的隐藏状态更新 h_t = A·h_{t-1} + B·x_t 与 GNN 的消息传递 m_v = Σ_{u∈N(v)} W·h_u 的数学关系——SSM 在序列上等价于 1D 因果图卷积，拓扑序使"1D 序列邻居"≈"图邻居"</li>
+      <li><strong>感受野分析</strong>：L 层 SSM 的感受野 = 序列全长（全局），而 L 层 GNN 的感受野 = L-hop 邻域（局部）——SSM 在拓扑序上天然有全局感受野</li>
+      <li><strong>信息保留分析</strong>：对比 B-Rep → 点云 → Hilbert 序列化 vs B-Rep → 拓扑序列化，量化信息损失</li>
+      <li><strong>注意力图对比</strong>：用 BRepFormer 的 attention map 与 BRepMamba 的隐藏状态激活做可视化对比</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────── -->
+<h3>2.3 技术路线图</h3>
+
+<div class="timeline">
+  <div class="timeline-item">
+    <div class="time">第 1-2 个月</div>
+    <div class="content"><strong>Phase 1</strong>：实现 5 种序列化策略，在 Fusion 360 Gallery 上对比，选出最优策略。复现 BRepNet 和 UV-Net 作为基线。</div>
+  </div>
+  <div class="timeline-item">
+    <div class="time">第 3-5 个月</div>
+    <div class="content"><strong>Phase 2</strong>：实现完整 BRepMamba 架构，在 Fusion 360、MFCAD++、SolidLetters 上全面评估。与 BRepNet、UV-Net、BRepFormer 对比。撰写论文初稿。</div>
+  </div>
+  <div class="timeline-item">
+    <div class="time">第 6-8 个月</div>
+    <div class="content"><strong>Phase 3</strong>：扩展到 FEA 时空代理模型。在 DrivAerML 上与 MeshGraphNet 对比。自建结构力学 FEA 数据集。</div>
+  </div>
+  <div class="timeline-item">
+    <div class="time">第 9-10 个月</div>
+    <div class="content"><strong>Phase 4</strong>：理论分析。SSM 与 GNN 消息传递的对偶关系，感受野分析，可解释性实验。</div>
+  </div>
+  <div class="timeline-item">
+    <div class="time">第 11-12 个月</div>
+    <div class="content">论文定稿与投稿（目标：ICCV/CVPR/NeurIPS 或 CAD 领域顶会如 SPM/SGP）。开源代码。</div>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────── -->
+<h3>2.4 风险与应对</h3>
+
+<table>
+<tr>
+  <th style="width:25%">风险</th>
+  <th style="width:40%">描述</th>
+  <th style="width:35%">应对方案</th>
+</tr>
+<tr>
+  <td>B-Rep 序列化不连续</td>
+  <td>拓扑遍历序在面间跳转时可能产生序列不连续，影响 SSM 局部建模</td>
+  <td>引入 ConvMamba（卷积补偿局部性）+ 空间状态注入（face 3D 质心坐标）</td>
+</tr>
+<tr>
+  <td>B-Rep 数据获取困难</td>
+  <td>工业 B-Rep 数据集规模远小于 ImageNet/ShapeNet</td>
+  <td>使用 ABC Dataset (100 万+) 做大规模预训练 + 自监督（借鉴 MTM 的 Masked Topology Modeling）</td>
+</tr>
+<tr>
+  <td>SSM 精度不如 Transformer</td>
+  <td>纯 SSM 在部分任务可能不如 Attention 的全局建模能力</td>
+  <td>设计 SSM-Attention 混合层（借鉴 PointLAMA 的 Latent Attention），作为 fallback</td>
+</tr>
+<tr>
+  <td>FEA 数据集不足</td>
+  <td>公开 FEA+CAD 数据集稀缺</td>
+  <td>Phase 3 可先用 DrivAerML 验证可行性，同步自建小规模结构力学数据集</td>
+</tr>
+<tr>
+  <td>被竞争者抢先</td>
+  <td>3D SSM 领域发展快，可能有人先做 B-Rep + SSM</td>
+  <td>尽快完成 Phase 1 并发布预印本（arXiv），确立优先权；Phase 3/4 做差异化</td>
+</tr>
+</table>
+
+<!-- ─────────────────────────────────────────── -->
+<h3>2.5 开发环境与工具链</h3>
+
+<table>
+<tr>
+  <th>类别</th>
+  <th>工具/框架</th>
+  <th>用途</th>
+</tr>
+<tr>
+  <td>SSM 框架</td>
+  <td>mamba-ssm + causal-conv1d</td>
+  <td>Mamba block 核心实现</td>
+</tr>
+<tr>
+  <td>B-Rep 处理</td>
+  <td>OpenCascade (OCC) / pythonocc</td>
+  <td>解析 STEP/IGES 文件，提取 B-Rep 拓扑</td>
+</tr>
+<tr>
+  <td>UV 网格编码</td>
+  <td>UV-Net 开源代码</td>
+  <td>复用面几何编码器</td>
+</tr>
+<tr>
+  <td>基线复现</td>
+  <td>BRepNet, UV-Net, PointMamba 开源代码</td>
+  <td>建立对比基线</td>
+</tr>
+<tr>
+  <td>数据集</td>
+  <td>Fusion 360 Gallery, MFCAD++, ABC, SolidLetters</td>
+  <td>训练与评估</td>
+</tr>
+<tr>
+  <td>GPU</td>
+  <td>A100 40GB × 2（最小配置）</td>
+  <td>训练与消融实验</td>
+</tr>
+<tr>
+  <td>FEA 仿真</td>
+  <td>ANSYS / Abaqus（生成自建数据集）</td>
+  <td>Phase 3 自建 FEA 时序数据</td>
+</tr>
+</table>
+
+<!-- ─────────────────────────────────────────── -->
+<h3>2.6 预期贡献</h3>
+
+<div class="card">
+<ol>
+  <li><strong>方法贡献</strong>：首个将 SSM 应用于 B-Rep 拓扑结构的工作，提出"拓扑序序列化"新范式，解决 3D SSM 中"无序数据人为序列化"的根本矛盾</li>
+  <li><strong>架构贡献</strong>：BRepMamba 架构——双向 Mamba + GS6 + 空间状态注入 + ConvMamba 局部补偿，专为 B-Rep 结构设计</li>
+  <li><strong>理论贡献</strong>：建立 SSM 隐藏状态更新与 GNN 消息传递的对偶关系，证明拓扑序使 1D 序列邻居≈图邻居</li>
+  <li><strong>应用贡献</strong>：BRepMamba-FEA 时空代理模型，将 B-Rep 拓扑序引入 FEA 时序建模</li>
+  <li><strong>开源贡献</strong>：完整开源代码 + 预训练模型 + 5 种序列化策略的系统性对比</li>
+</ol>
+</div>
+
+<hr class="divider">
+
+<!-- ============================================================ -->
+<!-- REFERENCES -->
+<!-- ============================================================ -->
+
+<h2><span class="num">III</span>参考文献</h2>
+
+<h3>3.1 3D SSM 论文</h3>
+<ol>
+  <li>PointMamba (NeurIPS 2024) — <a class="cite" href="https://arxiv.org/html/2507.17296v1" target="_blank">arxiv.org/html/2507.17296v1</a></li>
+  <li>CloudMamba (AAAI 2026) — <a class="cite" href="https://arxiv.org/html/2511.07823v1" target="_blank">arxiv.org/html/2511.07823v1</a></li>
+  <li>DM3D (NeurIPS 2026) — <a class="cite" href="https://arxiv.org/html/2512.03424" target="_blank">arxiv.org/html/2512.03424</a></li>
+  <li>PointLAMA (2025) — <a class="cite" href="https://arxiv.org/html/2507.17296v1" target="_blank">arxiv.org/html/2507.17296v1</a></li>
+  <li>StruMamba3D (ICCV 2025) — <a class="cite" href="https://arxiv.org/html/2506.21541v1" target="_blank">arxiv.org/html/2506.21541v1</a></li>
+  <li>Pamba/MambaD (AAAI 2025) — <a class="cite" href="https://arxiv.org/html/2406.17442v1" target="_blank">arxiv.org/html/2406.17442v1</a></li>
+  <li>HydraMamba (ACM MM 2025) — <a class="cite" href="https://arxiv.org/html/2507.19778v1" target="_blank">arxiv.org/html/2507.19778v1</a></li>
+  <li>UST-SSM (2025) — <a class="cite" href="https://arxiv.org/html/2508.14604" target="_blank">arxiv.org/html/2508.14604</a></li>
+  <li>Mamba4D (CVPR 2025) — <a class="cite" href="https://arxiv.org/html/2405.14338v2" target="_blank">arxiv.org/html/2405.14338v2</a></li>
+  <li>Voxel Mamba (NeurIPS 2024) — <a class="cite" href="https://github.com/zhangguowen/VoxelMamba" target="_blank">github.com/zhangguowen/VoxelMamba</a></li>
+  <li>MeshMamba (2025) — <a class="cite" href="https://arxiv.org/html/2507.15212v1" target="_blank">arxiv.org/html/2507.15212v1</a></li>
+  <li>Mamba-CAD (AAAI 2025) — <a class="cite" href="https://github.com/Sunny-Hack/Code-for-Mamba-CAD-AAAI-2025-" target="_blank">github.com/Sunny-Hack/Code-for-Mamba-CAD</a></li>
+  <li>3DMambaComplete (TOMM 2026) — <a class="cite" href="https://dl.acm.org/doi/pdf/10.1145/3774887" target="_blank">dl.acm.org/doi/pdf/10.1145/3774887</a></li>
+  <li>Spiking Point Mamba (ICCV 2025) — <a class="cite" href="https://arxiv.org/html/2504.14371v1" target="_blank">arxiv.org/html/2504.14371v1</a></li>
+</ol>
+
+<h3>3.2 B-Rep 深度学习论文</h3>
+<ol start="15">
+  <li>BRepNet (ICCV 2021) — <a class="cite" href="https://arxiv.org/html/2104.00706v2" target="_blank">arxiv.org/html/2104.00706v2</a></li>
+  <li>UV-Net (CVPR 2021) — <a class="cite" href="https://arxiv.org/html/2006.10211v2" target="_blank">arxiv.org/html/2006.10211v2</a></li>
+  <li>BRepFormer (2025) — <a class="cite" href="https://arxiv.org/html/2504.07378v3" target="_blank">arxiv.org/html/2504.07378v3</a></li>
+  <li>BRT (2025) — <a class="cite" href="https://arxiv.org/html/2504.07134v2" target="_blank">arxiv.org/html/2504.07134v2</a></li>
+  <li>Brep2Shape (2026) — <a class="cite" href="https://arxiv.org/html/2602.07429v1" target="_blank">arxiv.org/html/2602.07429v1</a></li>
+  <li>MTM (2025) — <a class="cite" href="https://arxiv.org/html/2607.20642v1" target="_blank">arxiv.org/html/2607.20642v1</a></li>
+  <li>BRepGen (2024) — <a class="cite" href="https://arxiv.org/html/2401.15563v1" target="_blank">arxiv.org/html/2401.15563v1</a></li>
+  <li>AutoBrep (SIGGRAPH Asia 2025) — <a class="cite" href="https://arxiv.org/html/2512.03018v1" target="_blank">arxiv.org/html/2512.03018v1</a></li>
+  <li>BrepGPT (2025) — <a class="cite" href="https://arxiv.org/html/2511.22171" target="_blank">arxiv.org/html/2511.22171</a></li>
+  <li>BrepVGAE (CVPR 2026) — <a class="cite" href="https://openaccess.thecvf.com/content/CVPR2026/papers/Guo_BrepVGAE" target="_blank">CVPR 2026</a></li>
+  <li>HoLa (2025) — <a class="cite" href="https://arxiv.org/html/2504.14257v3" target="_blank">arxiv.org/html/2504.14257v3</a></li>
+  <li>GC-CAD (2024) — <a class="cite" href="https://arxiv.org/pdf/2406.08863.pdf" target="_blank">arxiv.org/pdf/2406.08863</a></li>
+  <li>DeepCAD (2020) — <a class="cite" href="https://arxiv.org/pdf/2105.09492.pdf" target="_blank">arxiv.org/pdf/2105.09492</a></li>
+  <li>A2Z-10M+ (CVPR 2026) — <a class="cite" href="https://openaccess.thecvf.com/content/CVPR2026F/papers/Jena_A2Z-10M" target="_blank">CVPR 2026</a></li>
+</ol>
+
+<h3>3.3 FEA 仿真与深度学习论文</h3>
+<ol start="29">
+  <li>MeshGraphNet (DeepMind, 2020) — <a class="cite" href="https://www.deepmind.com/publications/learning-mesh-based-simulation-with-graph-networks" target="_blank">deepmind.com</a></li>
+  <li>X-MeshGraphNet (2024) — <a class="cite" href="https://arxiv.org/pdf/2411.17164.pdf" target="_blank">arxiv.org/pdf/2411.17164</a></li>
+  <li>FR-Mamba (2025) — <a class="cite" href="https://arxiv.org/html/2505.16083" target="_blank">arxiv.org/html/2505.16083</a></li>
+  <li>GNN for FEA Surrogate (2025) — <a class="cite" href="https://arxiv.org/pdf/2510.15750v1" target="_blank">arxiv.org/pdf/2510.15750</a></li>
+  <li>MeshMask (2025) — <a class="cite" href="https://arxiv.org/html/2501.08738" target="_blank">arxiv.org/html/2501.08738</a></li>
+  <li>MultiScale MeshGraphNets (2022) — <a class="cite" href="https://arxiv.org/pdf/2210.00612.pdf" target="_blank">arxiv.org/pdf/2210.00612</a></li>
+  <li>DrivAerML (2024) — <a class="cite" href="https://arxiv.org/pdf/2408.11969v2.pdf" target="_blank">arxiv.org/pdf/2408.11969</a></li>
+  <li>REALM Benchmark — <a class="cite" href="https://realm-bench.org/" target="_blank">realm-bench.org</a></li>
+  <li>NVIDIA PhysicsNeMo — <a class="cite" href="https://docs.nvidia.com/physicsnemo/" target="_blank">docs.nvidia.com/physicsnemo</a></li>
+</ol>
+
+<h3>3.4 2D 视觉 SSM（背景参考）</h3>
+<ol start="38">
+  <li>VSSD (ICCV 2025) — <a class="cite" href="https://arxiv.org/pdf/2407.18559v2.pdf" target="_blank">arxiv.org/pdf/2407.18559</a></li>
+  <li>QuadMamba (NeurIPS 2024) — <a class="cite" href="https://arxiv.org/pdf/2410.06806" target="_blank">arxiv.org/pdf/2410.06806</a></li>
+  <li>Flatten Wisely (2025) — <a class="cite" href="https://arxiv.org/html/2507.13384" target="_blank">arxiv.org/html/2507.13384</a></li>
+</ol>
+
+</div>
+
+</body>
+</html>
